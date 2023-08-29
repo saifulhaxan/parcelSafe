@@ -1,0 +1,154 @@
+@import url('./../fonts/stylesheet.css');
+
+/*----- General Css Start -----*/
+
+:root {
+    --primaryColor: #eec217;
+    --grayColor: #00293B;
+    --redColor : #ff0000;
+    --greenColor: #42C900;
+    --yellowColor: #E5BB45;
+    --whiteColor: #fff;
+}
+
+body {
+    font-family: 'Qanelas';
+    font-weight: 500;
+}
+
+.primaryColor {
+    color: var(--primaryColor) !important;
+}
+
+.grayColor {
+    color: var(--grayColor) !important;
+}
+
+.greenColor {
+    color: var(--greenColor) !important;
+}
+
+.redColor {
+    color: var(--grayColor) !important;
+}
+
+.yellowColor {
+    color: var(--yellowColor) !important;
+}
+
+.notButton {
+    border: none;
+    background: none;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+.classicToggle::after {
+    display: none;
+}
+
+/*----- General Css End -----*/
+
+
+
+
+/*----- Modal Css Start -----*/
+
+.closeButton {
+    font-size: 16px;
+    color: #fff;
+    background: var(--primaryColor);
+    width: 30px;
+    height: 30px;
+    border-radius: 99px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    outline: none;
+    margin: 0.5rem;
+    margin-left: auto;
+}
+
+.modalImage {
+    width: 90px;
+    margin-bottom: 1rem;
+}
+
+.modalContent {
+    margin: 1rem 0;
+}
+
+.modalHeading {
+    font-size: 24px;
+    font-weight: 500;
+    margin-bottom: 1rem;
+}
+/*----- Modal Css End -----*/
+
+
+.dashCard {
+    background: #fff;
+    border-radius: 0.5rem;
+    padding: 1rem 2rem;
+}
+
+.mainTitle {
+    font-size: 22px;
+    font-weight: 600;
+}
+
+.profileImage img {
+    width: 90px;
+    aspect-ratio: 1/1;
+    object-fit: cover;
+    object-position: center;
+    border-radius: 99px;
+    outline: 2px solid #bcbcbc;
+    outline-offset: 4px;
+}
+
+.statusBadge {
+    font-size: 15px;
+    color: #fff;
+    padding: 0.4rem 0.8rem;
+    border-top-left-radius: 99px;
+    border-bottom-left-radius: 99px;
+    position: relative;
+    left: 2rem;
+
+}
+
+.statusBadgeActive {
+    background: var(--greenColor);
+}
+
+.statusBadgeInactive {
+    background: var(--redColor);
+}
+
+.secondaryLabel {
+    font-size: 15px;
+    font-weight: 700;
+    color: #A2A2A2;
+    margin-bottom: 0.2rem;
+}
+
+.addUser {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.addUser .inputWrapper {
+    flex-grow: 1;
+}
+
+.secondaryText {
+    font-size: 15px;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 0.2rem;
+}
+

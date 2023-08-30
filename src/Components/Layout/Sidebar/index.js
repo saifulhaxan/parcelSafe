@@ -28,22 +28,6 @@ export const Sidebar = (props) => {
             <span className="sideLinkText">Dashboard</span>
           </Link>
         </li>
-        {/* <li className="sidebar-li">
-          <Link className={`sideLink ${location.pathname.includes('/roles-management') ? 'active' : ''}`} to="/roles-management">
-            <span className="sideIcon">
-              <FontAwesomeIcon icon={faUser} />
-            </span>
-            <span className="sideLinkText">Roles Management</span>
-          </Link>
-        </li> */}
-        <li className="sidebar-li">
-          <Link className={`sideLink ${location.pathname.includes('/department-management') ? 'active' : ''}`} to="/department-management">
-            <span className="sideIcon">
-              <FontAwesomeIcon icon={faEye} />
-            </span>
-            <span className="sideLinkText">Data</span>
-          </Link>
-        </li>
         <li className="sidebar-li">
           <Link className={`sideLink ${location.pathname.includes('/user-management') ? 'active' : ''}`} to="/user-management">
             <span className="sideIcon">
@@ -52,14 +36,15 @@ export const Sidebar = (props) => {
             <span className="sideLinkText">User Management</span>
           </Link>
         </li>
-        {/* <li className="sidebar-li">
-          <Link className={`sideLink ${location.pathname.includes('/task-view') ? 'active' : ''}`} to="/task-view">
+        <li className="sidebar-li">
+          <Link className={`sideLink ${location.pathname.includes('/issue-administration') ? 'active' : ''}`} to="/issue-administration">
             <span className="sideIcon">
-              <FontAwesomeIcon icon={faTasks} />
+              <FontAwesomeIcon icon={faEye} />
             </span>
-            <span className="sideLinkText">Task View</span>
+            <span className="sideLinkText">Issue Administration</span>
           </Link>
-        </li> */}
+        </li>
+
       </ul>
     </div>
   );

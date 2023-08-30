@@ -4,13 +4,13 @@ import { DashboardLayout } from "../../Components/Layout/DashboardLayout";
 import BackButton from "../../Components/BackButton";
 import CustomModal from "../../Components/CustomModal";
 
-const UserManagementDetail = () => {
+export const IssueDetail = () => {
 
   const { id } = useParams();
 
 
 
-  const [profileData, setProfileData] = useState({});
+  const [issue, setIssue] = useState({});
 
   const [showModal, setShowModal] = useState(false);
   const [showModal2, setShowModal2] = useState(false);
@@ -28,7 +28,7 @@ const UserManagementDetail = () => {
 
   useEffect(() => {
     const LogoutData = localStorage.getItem('login');
-    fetch(`https://custom.mystagingserver.site/parcel_safe_app/public/api/admin/get-user/${id}`,
+    fetch(`https://custom.mystagingserver.site/parcel_safe_app/public/api/admin/view-issue/${id}`,
       {
         method: 'GET',
         headers: {
@@ -42,8 +42,9 @@ const UserManagementDetail = () => {
         return response.json()
       })
       .then((data) => {
-        setProfileData(data.users)
         console.log(data)
+        setIssue(data.inquiry)
+        
       })
       .catch((error) => {
         console.log(error);
@@ -59,7 +60,7 @@ const UserManagementDetail = () => {
             <div className="col-12 mb-2">
               <h2 className="mainTitle">
                 <BackButton />
-                User Details
+                Issue Details
               </h2>
             </div>
           </div>
@@ -68,47 +69,30 @@ const UserManagementDetail = () => {
               <div className="row mb-3 justify-content-end">
                 <div className="col-lg-4 text-end order-1 order-lg-2 mb-3">
                   <button onClick={() => {
-                    profileData.status ? setShowModal(true) : setShowModal3(true)
-                  }} className="notButton primaryColor fw-bold text-decoration-underline">Mark as {profileData.status ? 'Inactive' : 'Active'}</button>
-                  <span className={`statusBadge ${profileData.status == 1 ? 'statusBadgeActive' : 'statusBadgeInactive'}`}>{profileData.status == 1 ? 'Active' : 'Inactive'}</span>
+                    issue?.status ? setShowModal(true) : setShowModal3(true)
+                  }} className="notButton primaryColor fw-bold text-decoration-underline">Mark as {issue?.status ? 'Inactive' : 'Active'}</button>
+                  <span className={`statusBadge ${issue?.status == 1 ? 'statusBadgeActive' : 'statusBadgeInactive'}`}>{issue?.status == 1 ? 'Active' : 'Resolved'}</span>
                 </div>
               </div>
               <div className="row">
                 <div className="col-lg-8">
                   <div className="row">
-                    <div className="col-xl-6 col-md-6 mb-3">
+                    <div className="col-xl-6 col-md-6 mb-3">  
                       <h4 className="secondaryLabel">Name</h4>
-                      <p className="secondaryText">{profileData.name}</p>
+                      <p className="secondaryText">{issue?.user?.name}</p>
                     </div>
                     <div className="col-xl-6 col-md-6 mb-3">
-                      <h4 className="secondaryLabel">Email Address</h4>
-                      <p className="secondaryText">{profileData.email}</p>
+                      <h4 className="secondaryLabel">Issue Report</h4>
+                      <p className="secondaryText">{issue?.created_at}</p>
                     </div>
-                    <div className="col-xl-6 col-md-6 mb-3">
-                      <h4 className="secondaryLabel">Phone Number</h4>
-                      <p className="secondaryText">{profileData.number}</p>
+                    <div className="col-xl-12 col-md-6 mb-3">
+                      <h4 className="secondaryLabel">Issue Title</h4>
+                      <p className="secondaryText">{issue?.issue}</p>
                     </div>
-                    <div className="col-xl-6 col-md-6 mb-3">
-                      <h4 className="secondaryLabel">Country</h4>
-                      <p className="secondaryText">{profileData.country}</p>
+                    <div className="col-xl-12 col-md-6 mb-3">
+                      <h4 className="secondaryLabel">Message</h4>
+                      <p className="secondaryText">{issue?.message}</p>
                     </div>
-                    <div className="col-xl-6 col-md-6 mb-3">
-                      <h4 className="secondaryLabel">Postal Code</h4>
-                      <p className="secondaryText">{profileData.postal_code}</p>
-                    </div>
-                    <div className="col-xl-6 col-md-6 mb-3">
-                      <h4 className="secondaryLabel">City</h4>
-                      <p className="secondaryText">{profileData.city}</p>
-                    </div>
-                    <div className="col-xl-6 mb-3">
-                      <h4 className="secondaryLabel">Address 1</h4>
-                      <p className="secondaryText">{profileData.address_1}</p>
-                    </div>
-                    <div className="col-xl-6 mb-3">
-                      <h4 className="secondaryLabel">Address 2</h4>
-                      <p className="secondaryText">{profileData?.address_2}</p>
-                    </div>
-
                   </div>
                 </div>
               </div>
@@ -126,4 +110,3 @@ const UserManagementDetail = () => {
   );
 };
 
-export default UserManagementDetail;

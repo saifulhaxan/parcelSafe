@@ -13,12 +13,10 @@ import CustomPagination from "../../Components/CustomPagination"
 import CustomInput from "../../Components/CustomInput";
 import CustomButton from "../../Components/CustomButton";
 
-import { userData } from "./../../Config/Data";
 
 import "./style.css";
 
 export const UserManagement = () => {
-
 
   const [data, setData] = useState([]);
   const [showModal, setShowModal] = useState(false);
@@ -125,13 +123,6 @@ export const UserManagement = () => {
     },
   ];
 
-  const removeUser = ((itemRemove) => {
-    console.log(userData);
-    const dupArray = [...userData]
-    dupArray.splice(itemRemove, 1);
-    setData(dupArray)
-    console.log(dupArray);
-  })
 
   return (
     <>
@@ -146,7 +137,6 @@ export const UserManagement = () => {
                   </div>
                   <div className="col-md-6 mb-2">
                     <div className="addUser">
-                      <CustomButton type="button" text="Add User" className="primaryButton" />
                       <CustomInput type="text" placeholder="Search Here..." value={inputValue} inputClass="mainInput" onChange={handleChange} />
                     </div>
                   </div>
@@ -170,14 +160,14 @@ export const UserManagement = () => {
                             <td>13</td>
                             <td>{item.created_at}</td>
                             <td>{item.updated_at}</td>
-                            <td className={item.status  == 1 ? 'greenColor' : "redColor"}>{item.status == 1 ? 'Active' : "Inactive"}</td>
+                            <td className={item.status == 1 ? 'greenColor' : "redColor"}>{item.status == 1 ? 'Active' : "Inactive"}</td>
                             <td>
                               <Dropdown className="tableDropdown">
                                 <Dropdown.Toggle variant="transparent" className="notButton classicToggle">
                                   <FontAwesomeIcon icon={faEllipsisV} />
                                 </Dropdown.Toggle>
                                 <Dropdown.Menu align="end" className="tableDropdownMenu">
-                                  <button onClick={() => removeUser(index)} className="tableAction"><FontAwesomeIcon icon={faEye} className="tableActionIcon" />Remove</button>
+                                  <Link to={`/user-management/user-detail/${item.id}`} className="tableAction"><FontAwesomeIcon icon={faEye} className="tableActionIcon" />View</Link>
                                   <button onClick={() => {
                                     item.status ? setShowModal(true) : setShowModal3(true)
                                   }} className="tableAction">{item.status ? <FontAwesomeIcon icon={faTimes} className="tableActionIcon" /> : <FontAwesomeIcon icon={faCheck} className="tableActionIcon" />}{item.status ? 'Inactive' : "Active"}</button>

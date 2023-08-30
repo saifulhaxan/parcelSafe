@@ -39,7 +39,7 @@ export const Dashboard = () => {
             <div className="col-12">
               <div className="dashCard">
                 <div className="d-flex flex-wrap justify-content-between">
-                <h3 className="mainTitle">Task Status</h3>
+                <h3 className="mainTitle">Total Users</h3>
                 <SelectBox selectClass="mainInput" name="Monthly" required option={'optionData'}
                   
                 />
@@ -61,7 +61,7 @@ export const Dashboard = () => {
                       tension: "0.5",
                       datasets: [
                         {
-                          label: "Current Task",
+                          label: "Active Users",
 
                           backgroundColor: "rgb(0 41 59 / 81%)",
                           borderColor: "#00293B",
@@ -72,7 +72,7 @@ export const Dashboard = () => {
                           tension: 0.5,
                         },
                         {
-                          label: "Pending Task",
+                          label: "Inactive Users",
                           backgroundColor: "rgb(1 22 215 / 81%)",
                           borderColor: "#0116d7",
                           pointBackgroundColor: "#0116d7",

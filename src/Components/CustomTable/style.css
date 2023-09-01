@@ -1,10 +1,12 @@
 .customTable {
     overflow-x: auto;
+    text-align: center;
 }
 
 .arrowTables {
     position: absolute;
     left: -7px;
+    display: none;
 }
 
 .arrowTables button {

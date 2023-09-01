@@ -15,8 +15,8 @@ export const SelectBox = (props) => {
             </div>
             {props?.label && <label htmlFor={props?.id} className={props?.labelClass}>{props?.label}{props?.required ? '*' : ''}</label>}
             <div className="fieldData">
-                <select className={props?.selectClass} name={props?.name}>
-                    <option>{props?.name}</option>
+                <select className={props?.selectClass} name={props?.name} value={props.value} onChange={props.onChange}>
+                    <option>{props?.placeholder}</option>
                     {Array.isArray(props.option) && props.option.map(item => (
                         <option value={item.code}>{item.name}</option>
                     ))}

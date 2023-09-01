@@ -56,6 +56,7 @@ export const UserManagement = () => {
 
 
   useEffect(() => {
+    document.querySelector('.loaderBox').classList.remove("d-none");
     document.title = 'Parcel Safe | User Management';
     const LogoutData = localStorage.getItem('login');
 
@@ -74,10 +75,12 @@ export const UserManagement = () => {
         response.json()
       )
       .then((data) => {
+        document.querySelector('.loaderBox').classList.add("d-none");
         console.log(data.users)
         setData(data.users);
       })
       .catch((error) => {
+        document.querySelector('.loaderBox').classList.add("d-none");
         console.log(error)
       })
 

@@ -8,6 +8,9 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <App />
+    <div className='loaderBox d-none'>
+      <div class="custom-loader"></div>
+    </div>
   </React.StrictMode>
 );
 

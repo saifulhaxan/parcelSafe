@@ -4,13 +4,13 @@ import { DashboardLayout } from "../../Components/Layout/DashboardLayout";
 import BackButton from "../../Components/BackButton";
 import CustomModal from "../../Components/CustomModal";
 
-export const IssueDetail = () => {
+export const SafeDetails = () => {
 
   const { id } = useParams();
 
 
 
-  const [issue, setIssue] = useState({});
+  const [profileData, setProfileData] = useState({});
 
   const [showModal, setShowModal] = useState(false);
   const [showModal2, setShowModal2] = useState(false);
@@ -29,7 +29,7 @@ export const IssueDetail = () => {
   useEffect(() => {
     document.querySelector('.loaderBox').classList.remove("d-none");
     const LogoutData = localStorage.getItem('login');
-    fetch(`https://custom.mystagingserver.site/parcel_safe_app/public/api/admin/view-issue/${id}`,
+    fetch(`https://custom.mystagingserver.site/parcel_safe_app/public/api/admin/view-safe/${id}`,
       {
         method: 'GET',
         headers: {
@@ -43,10 +43,9 @@ export const IssueDetail = () => {
         return response.json()
       })
       .then((data) => {
-        console.log(data)
+        setProfileData(data.safe)
         document.querySelector('.loaderBox').classList.add("d-none");
-        setIssue(data.inquiry)
-        
+        console.log(data)
       })
       .catch((error) => {
         document.querySelector('.loaderBox').classList.add("d-none");
@@ -63,7 +62,7 @@ export const IssueDetail = () => {
             <div className="col-12 mb-2">
               <h2 className="mainTitle">
                 <BackButton />
-                Issue Details
+                Safe Details
               </h2>
             </div>
           </div>
@@ -71,31 +70,50 @@ export const IssueDetail = () => {
             <div className="col-12">
               <div className="row mb-3 justify-content-end">
                 <div className="col-lg-4 text-end order-1 order-lg-2 mb-3">
-                  <button onClick={() => {
-                    issue?.status ? setShowModal(true) : setShowModal3(true)
-                  }} className="notButton primaryColor fw-bold text-decoration-underline">Mark as {issue?.status ? 'Inactive' : 'Active'}</button>
-                  <span className={`statusBadge ${issue?.status == 1 ? 'statusBadgeActive' : 'statusBadgeInactive'}`}>{issue?.status == 1 ? 'Active' : 'Resolved'}</span>
+                  <span className={`statusBadge ${profileData.status == 1 ? 'statusBadgeActive' : 'statusBadgeInactive'}`}>{profileData.status == 1 ? 'Active' : 'Inactive'}</span>
                 </div>
               </div>
               <div className="row">
-                <div className="col-lg-8">
+                <div className="col-lg-12">
                   <div className="row">
-                    <div className="col-xl-6 col-md-6 mb-3">  
-                      <h4 className="secondaryLabel">Name</h4>
-                      <p className="secondaryText">{issue?.user?.name}</p>
+                    <div className="col-xl-4 col-md-4 mb-3">
+                      <h4 className="secondaryLabel">Safe Serial Number</h4>
+                      <p className="secondaryText">{profileData.serial_number}</p>
                     </div>
-                    <div className="col-xl-6 col-md-6 mb-3">
-                      <h4 className="secondaryLabel">Issue Report</h4>
-                      <p className="secondaryText">{issue?.created_at}</p>
+                    <div className="col-xl-4 col-md-4 mb-3">
+                      <h4 className="secondaryLabel">Safe Name</h4>
+                      <p className="secondaryText">{profileData.name}</p>
                     </div>
-                    <div className="col-xl-12 col-md-6 mb-3">
-                      <h4 className="secondaryLabel">Issue Title</h4>
-                      <p className="secondaryText">{issue?.issue}</p>
+
+                    <div className="col-xl-4 col-md-4 mb-3">
+                      <h4 className="secondaryLabel">Address</h4>
+                      <p className="secondaryText">{profileData.address}</p>
                     </div>
-                    <div className="col-xl-12 col-md-6 mb-3">
-                      <h4 className="secondaryLabel">Message</h4>
-                      <p className="secondaryText">{issue?.message}</p>
+                    <div className="col-xl-4 col-md-4 mb-3">
+                      <h4 className="secondaryLabel">City</h4>
+                      <p className="secondaryText">{profileData.city}</p>
                     </div>
+                    <div className="col-xl-4 col-md-4 mb-3">
+                      <h4 className="secondaryLabel">Postal Code</h4>
+                      <p className="secondaryText">{profileData.postal_code}</p>
+                    </div>
+                    <div className="col-xl-4 col-md-4 mb-3">
+                      <h4 className="secondaryLabel">State</h4>
+                      <p className="secondaryText">{profileData.state}</p>
+                    </div>
+                    <div className="col-xl-4 col-md-4 mb-3">
+                      <h4 className="secondaryLabel">Safe State</h4>
+                      <p className="secondaryText">{profileData.safe_state == 0 ? 'Offline' : 'Online'}</p>
+                    </div>
+                    <div className="col-xl-4 mb-3">
+                      <h4 className="secondaryLabel">Subscription Status</h4>
+                      <p className="secondaryText">{profileData.subscription_status == 0 ? 'Expired' : 'Online'}</p>
+                    </div>
+                    <div className="col-xl-4 mb-3">
+                      <h4 className="secondaryLabel">Safe Assosiate</h4>
+                      <p className="secondaryText">{profileData?.user_assosiation_date == null ? 'Not Assigned' : profileData?.user_assosiation_date}</p>
+                    </div>
+
                   </div>
                 </div>
               </div>

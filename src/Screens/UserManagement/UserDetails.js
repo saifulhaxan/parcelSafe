@@ -27,6 +27,7 @@ const UserManagementDetail = () => {
   }
 
   useEffect(() => {
+    document.querySelector('.loaderBox').classList.remove("d-none");
     const LogoutData = localStorage.getItem('login');
     fetch(`https://custom.mystagingserver.site/parcel_safe_app/public/api/admin/get-user/${id}`,
       {
@@ -43,9 +44,11 @@ const UserManagementDetail = () => {
       })
       .then((data) => {
         setProfileData(data.users)
+        document.querySelector('.loaderBox').classList.add("d-none");
         console.log(data)
       })
       .catch((error) => {
+        document.querySelector('.loaderBox').classList.add("d-none");
         console.log(error);
       })
   }, [id]);

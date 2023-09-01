@@ -4,7 +4,7 @@
 
 :root {
     --primaryColor: #eec217;
-    --grayColor: #00293B;
+    --grayColor: hsl(198, 100%, 12%);
     --redColor : #ff0000;
     --greenColor: #42C900;
     --yellowColor: #E5BB45;
@@ -29,7 +29,7 @@ body {
 }
 
 .redColor {
-    color: var(--grayColor) !important;
+    color: var(--redColor) !important;
 }
 
 .yellowColor {
@@ -152,3 +152,26 @@ body {
     margin-bottom: 0.2rem;
 }
 
+
+.custom-loader {
+    width:50px;
+    height:50px;
+    border-radius:50%;
+    border:8px solid;
+    border-color:#E4E4ED;
+    border-right-color: #eec217;
+    animation:s2 1s infinite linear;
+  }
+  @keyframes s2 {to{transform: rotate(1turn)}}
+
+  .loaderBox {
+    position: absolute;
+    background-color: #000000c2;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    z-index: 99;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

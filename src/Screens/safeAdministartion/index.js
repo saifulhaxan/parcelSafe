@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import { Dropdown } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEllipsisV, faEye, faCheck, faTimes, faFilter } from "@fortawesome/free-solid-svg-icons";
+import { faEllipsisV, faEye, faCheck, faTimes, faEdit } from "@fortawesome/free-solid-svg-icons";
 
 import { DashboardLayout } from "../../Components/Layout/DashboardLayout";
-import CustomTable from "../../Components/CustomTable";
+import CustomTable from "./../../Components/CustomTable";
 import CustomModal from "../../Components/CustomModal";
 
 import CustomPagination from "../../Components/CustomPagination"
@@ -16,7 +16,7 @@ import CustomButton from "../../Components/CustomButton";
 
 import "./style.css";
 
-export const IssueAdministration = () => {
+export const SafeManagement = () => {
 
   const [data, setData] = useState([]);
   const [showModal, setShowModal] = useState(false);
@@ -30,6 +30,11 @@ export const IssueAdministration = () => {
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
+
+  const navigate = useNavigate();
+  const addSafe = () => {
+    navigate('/add-safe');
+  }
 
 
   const inActive = () => {
@@ -45,16 +50,21 @@ export const IssueAdministration = () => {
     setInputValue(e.target.value);
   }
 
+  const filterData = data.filter(item =>
+    item.name.toLowerCase().includes(inputValue.toLowerCase())
+  );
 
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = filterData.slice(indexOfFirstItem, indexOfLastItem);
 
 
 
   useEffect(() => {
-    document.querySelector('.loaderBox').classList.remove("d-none");
-    document.title = 'Parcel Safe | Issue Administartion';
+    document.title = 'Parcel Safe | User Management';
     const LogoutData = localStorage.getItem('login');
-
-    fetch('https://custom.mystagingserver.site/parcel_safe_app/public/api/admin/issue-listing',
+    document.querySelector('.loaderBox').classList.remove("d-none");
+    fetch('https://custom.mystagingserver.site/parcel_safe_app/public/api/admin/safe-list',
       {
         method: 'GET',
         headers: {
@@ -68,10 +78,10 @@ export const IssueAdministration = () => {
       .then(response =>
         response.json()
       )
-      .then((responseData) => {
-        console.log(responseData.inquiries)
+      .then((data) => {
+        console.log(data)
         document.querySelector('.loaderBox').classList.add("d-none");
-        setData(responseData.inquiries);
+        setData(data.safes);
       })
       .catch((error) => {
         document.querySelector('.loaderBox').classList.add("d-none");
@@ -81,38 +91,42 @@ export const IssueAdministration = () => {
 
   }, []);
 
-  const filterData = data.filter(item =>
-    item.issue.toLowerCase().includes(inputValue.toLowerCase())
-  );
-
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = filterData.slice(indexOfFirstItem, indexOfLastItem);
-
   const maleHeaders = [
     {
       key: "id",
       title: "S.No",
     },
     {
-      key: "reported",
-      title: "Reported by",
+      key: "safeName",
+      title: "Safe Name",
     },
     {
-      key: "issue",
-      title: "Issue",
+      key: "serialNumber",
+      title: "Safe Serial Number",
     },
     {
-      key: "reportedOn",
-      title: "Reported on",
+      key: "safeStatus",
+      title: "Safe State",
+    },
+    {
+      key: "location",
+      title: "Location",
+    },
+    {
+      key: "subscriptionStatus",
+      title: "Subscription status:",
+    },
+    {
+      key: "associateUser",
+      title: "Associated Main User",
+    },
+    {
+      key: "associateDate",
+      title: "Association date",
     },
     {
       key: "status",
       title: "Status",
-    },
-    {
-      key: "resolution",
-      title: "Resolution",
     },
     {
       key: "actions",
@@ -130,10 +144,11 @@ export const IssueAdministration = () => {
               <div className="dashCard">
                 <div className="row mb-3 justify-content-between">
                   <div className="col-md-6 mb-2">
-                    <h2 className="mainTitle">Issue Administartion</h2>
+                    <h2 className="mainTitle">Safe Management</h2>
                   </div>
                   <div className="col-md-6 mb-2">
                     <div className="addUser">
+                      <CustomButton text="Add Safe" variant='primaryButton' onClick={addSafe}/>
                       <CustomInput type="text" placeholder="Search Here..." value={inputValue} inputClass="mainInput" onChange={handleChange} />
                     </div>
                   </div>
@@ -149,11 +164,14 @@ export const IssueAdministration = () => {
                           <tr key={index}>
                             <td>{index + 1}</td>
                             <td className="text-capitalize">
-                              {item.created_at}
+                              {item.name}
                             </td>
-                            <td>{item.issue}</td>
-                            <td>{item.updated_at}</td>
-                            <td>{item.resolution == null ? 'No Resolution' : item.resolution}</td>
+                            <td>{item.serial_number}</td>
+                            <td>{item.safe_state == 0 ? 'Offline' : 'Online'}</td>
+                            <td>{`${item.address}, ${item.city}, ${item.state}, ${item.postal_code}`}</td>
+                            <td className={item.subscription_status == 1 ? 'greenColor' : "redColor"}>{item.subscription_status == 1 ? 'Active' : 'Expired'}</td>
+                            <td>{item.main_user_id == null ? 'Not Assigned' : item.main_user_id}</td>
+                            <td>{item.user_assosiation_date == null ? 'Not Available' : item.user_assosiation_date}</td>
                             <td className={item.status == 1 ? 'greenColor' : "redColor"}>{item.status == 1 ? 'Active' : "Inactive"}</td>
                             <td>
                               <Dropdown className="tableDropdown">
@@ -161,10 +179,9 @@ export const IssueAdministration = () => {
                                   <FontAwesomeIcon icon={faEllipsisV} />
                                 </Dropdown.Toggle>
                                 <Dropdown.Menu align="end" className="tableDropdownMenu">
-                                  <Link to={`/issue-administration/issue-detail/${item.id}`} className="tableAction"><FontAwesomeIcon icon={faEye} className="tableActionIcon" />View</Link>
-                                  <button onClick={() => {
-                                    item.status ? setShowModal(true) : setShowModal3(true)
-                                  }} className="tableAction">{item.status ? <FontAwesomeIcon icon={faTimes} className="tableActionIcon" /> : <FontAwesomeIcon icon={faCheck} className="tableActionIcon" />}{item.status ? 'Inactive' : "Active"}</button>
+                                  <Link to={`/safe-administration/safe-detail/${item.id}`} className="tableAction"><FontAwesomeIcon icon={faEye} className="tableActionIcon" />View</Link>
+
+                                  <Link to={`/safe-administration/edit-detail/${item.id}`} className="tableAction"><FontAwesomeIcon icon={faEdit} className="tableActionIcon" />Edit</Link>
                                 </Dropdown.Menu>
                               </Dropdown>
                             </td>

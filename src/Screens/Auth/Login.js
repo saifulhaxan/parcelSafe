@@ -26,6 +26,7 @@ const AdminLogin = () => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
+        document.querySelector('.loaderBox').classList.remove("d-none");
         
         const formDataMethod = new FormData();
         formDataMethod.append('email', formData.email);
@@ -46,13 +47,16 @@ const AdminLogin = () => {
                 const responseData = await response.json();
                 localStorage.setItem('login', responseData.data.token);
                 console.log('Login Response:', responseData);
+                document.querySelector('.loaderBox').classList.add("d-none");
                 navigate('/dashboard')
                 
             } else {
+                document.querySelector('.loaderBox').classList.add("d-none");
                 alert('Invalid Credentials')
                 console.error('Login failed');
             }
         } catch (error) {
+            document.querySelector('.loaderBox').classList.add("d-none");
             console.error('Error:', error);
         }
     };
@@ -93,7 +97,7 @@ const AdminLogin = () => {
                             <input type="checkbox" name="rememberMe" id="rememberMe" className='me-1' />
                             <label htmlFor="rememberMe" className='fw-semibold'>Remember Me</label>
                         </div>
-                        <Link to={'/forget-password'} className='text-dark text-decoration-underline'>Forget Password?</Link>
+                        {/* <Link to={'/forget-password'} className='text-dark text-decoration-underline'>Forget Password?</Link> */}
                     </div>
                     <div className="mt-4 text-center">
                         <CustomButton variant='primaryButton' text='Login' type='submit' />

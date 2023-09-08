@@ -5,6 +5,11 @@ import StatCard from "../../Components/StatsCard/index.js";
 import { stats } from "../../Config/Data";
 import { CChart } from "@coreui/react-chartjs";
 import { SelectBox } from "../../Components/CustomSelect";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faArrowCircleUp,
+  faArrowCircleDown,
+} from "@fortawesome/free-solid-svg-icons";
 
 import "./style.css";
 
@@ -15,8 +20,50 @@ export const Dashboard = () => {
 
     document.title = 'Parcel Safe | Dashboard';
 
-    setStatistics(stats)
+    document.querySelector('.loaderBox').classList.remove("d-none");
+    document.title = 'Parcel Safe | User Management';
+    const LogoutData = localStorage.getItem('login');
+
+    fetch('https://custom.mystagingserver.site/parcel_safe_app/public/api/admin/dashboarddata',
+      {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${LogoutData}`
+        },
+      }
+    )
+
+      .then(response =>
+        response.json()
+      )
+      .then((data) => {
+        document.querySelector('.loaderBox').classList.add("d-none");
+        console.log(data)
+        setStatistics(data)
+      })
+      .catch((error) => {
+        document.querySelector('.loaderBox').classList.add("d-none");
+        console.log(error)
+      })
+
   }, []);
+
+
+  const optionData = [
+    {
+      code: 0,
+      name: 'Monthly'
+    },
+    {
+      code: 1,
+      name: 'Yearly'
+    }
+  ]
+
+
+  console.log(statistics)
 
   return (
     <>
@@ -26,11 +73,74 @@ export const Dashboard = () => {
             <div className="col-12">
               <div className="dashCard">
                 <div className="row">
-                  {statistics.map((stats) => (
-                    <div className="col-xl-4 col-md-6 stats" key={stats.id}>
-                      <StatCard item={stats} />
+                    <div className="col-xl-4 col-md-6 stats">
+                      <div className="statsCard">
+                        <div className="statsContent">
+                          <div className="statsData">
+                            <h3 className="statsNumber">{statistics.data?.total_user}</h3>
+                            <p className="statsText">Total Users</p>
+                          </div>
+                        </div>
+                        <div className="statsChange">
+                          <p>
+                              100%
+                              <FontAwesomeIcon
+                                icon={faArrowCircleUp}
+                                className="me-2 redColor"
+                              />
+                            
+                            
+                          </p>
+                          <p>Since last week</p>
+                        </div>
+                      </div>
                     </div>
-                  ))}
+
+                    <div className="col-xl-4 col-md-6 stats">
+                      <div className="statsCard">
+                        <div className="statsContent">
+                          <div className="statsData">
+                            <h3 className="statsNumber">{statistics.data?.issue_pending}</h3>
+                            <p className="statsText">Pending Issues</p>
+                          </div>
+                        </div>
+                        <div className="statsChange">
+                          <p>
+                              100%
+                              <FontAwesomeIcon
+                                icon={faArrowCircleUp}
+                                className="me-2 redColor"
+                              />
+                            
+                            
+                          </p>
+                          <p>Since last week</p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="col-xl-4 col-md-6 stats">
+                      <div className="statsCard">
+                        <div className="statsContent">
+                          <div className="statsData">
+                            <h3 className="statsNumber">{statistics.data?.total_issues}</h3>
+                            <p className="statsText">Total Issues</p>
+                          </div>
+                        </div>
+                        <div className="statsChange">
+                          <p>
+                              100%
+                              <FontAwesomeIcon
+                                icon={faArrowCircleUp}
+                                className="me-2 redColor"
+                              />
+                            
+                            
+                          </p>
+                          <p>Since last week</p>
+                        </div>
+                      </div>
+                    </div>
                 </div>
               </div>
             </div>
@@ -39,10 +149,10 @@ export const Dashboard = () => {
             <div className="col-12">
               <div className="dashCard">
                 <div className="d-flex flex-wrap justify-content-between">
-                <h3 className="mainTitle">Total Users</h3>
-                <SelectBox selectClass="mainInput" name="Monthly" required option={'optionData'}
-                  
-                />
+                  <h3 className="mainTitle">Total Users</h3>
+                  <SelectBox selectClass="mainInput" name="Monthly" required option={optionData}
+
+                  />
                 </div>
                 <div className="graph-wrapper">
                   <CChart

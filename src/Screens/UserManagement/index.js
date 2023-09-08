@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 import { Dropdown } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEllipsisV, faEye, faCheck, faTimes, faFilter } from "@fortawesome/free-solid-svg-icons";
+import { faEllipsisV, faEye, faEdit, faTimes, faFilter } from "@fortawesome/free-solid-svg-icons";
 
 import { DashboardLayout } from "../../Components/Layout/DashboardLayout";
 import CustomTable from "./../../Components/CustomTable";
@@ -171,9 +171,7 @@ export const UserManagement = () => {
                                 </Dropdown.Toggle>
                                 <Dropdown.Menu align="end" className="tableDropdownMenu">
                                   <Link to={`/user-management/user-detail/${item.id}`} className="tableAction"><FontAwesomeIcon icon={faEye} className="tableActionIcon" />View</Link>
-                                  <button onClick={() => {
-                                    item.status ? setShowModal(true) : setShowModal3(true)
-                                  }} className="tableAction">{item.status ? <FontAwesomeIcon icon={faTimes} className="tableActionIcon" /> : <FontAwesomeIcon icon={faCheck} className="tableActionIcon" />}{item.status ? 'Inactive' : "Active"}</button>
+                                  <Link to={`/user-management/edit-detail/${item.id}`} className="tableAction"><FontAwesomeIcon icon={faEdit} className="tableActionIcon" />Edit</Link>
                                 </Dropdown.Menu>
                               </Dropdown>
                             </td>

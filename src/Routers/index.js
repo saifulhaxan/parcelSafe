@@ -8,6 +8,7 @@ import { Dashboard } from "../Screens/Dashboard";
 
 import { UserManagement } from "../Screens/UserManagement";
 import UserManagementDetail from "../Screens/UserManagement/UserDetails"
+import { EditUserDetails } from "../Screens/UserManagement/editUser";
 
 import { IssueAdministration } from "../Screens/IssueAdministration";
 import { IssueDetail } from "../Screens/IssueAdministration/IssueDetails";
@@ -38,6 +39,7 @@ export default function AdminRouter() {
 
         <Route path="/user-management" element={<ProtectedRoutes Components={UserManagement} />} />
         <Route path="/user-management/user-detail/:id" element={<ProtectedRoutes Components={UserManagementDetail} />} />
+        <Route path="/user-management/edit-detail/:id" element={<ProtectedRoutes Components={EditUserDetails} />} />
 
         <Route path="/issue-administration" element={<ProtectedRoutes Components={IssueAdministration} />} />
         <Route path="/issue-administration/issue-detail/:id" element={<ProtectedRoutes Components={IssueDetail} />} />

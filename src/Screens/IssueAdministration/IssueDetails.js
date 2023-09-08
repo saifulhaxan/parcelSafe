@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { DashboardLayout } from "../../Components/Layout/DashboardLayout";
 import BackButton from "../../Components/BackButton";
 import CustomModal from "../../Components/CustomModal";
+import CustomButton from "../../Components/CustomButton";
 
 export const IssueDetail = () => {
 
@@ -16,6 +17,13 @@ export const IssueDetail = () => {
   const [showModal2, setShowModal2] = useState(false);
   const [showModal3, setShowModal3] = useState(false);
   const [showModal4, setShowModal4] = useState(false);
+  const [message, setMessage] = useState(false)
+
+  const [formData, setFormData] = useState({
+    status: '0',
+    resolution: ''
+  });
+
 
   const inActive = () => {
     setShowModal(false)
@@ -26,6 +34,40 @@ export const IssueDetail = () => {
     setShowModal4(true)
   }
 
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    document.querySelector('.loaderBox').classList.remove("d-none");
+
+    console.log(formData)
+
+    const LogoutData = localStorage.getItem('login');
+    fetch(`https://custom.mystagingserver.site/parcel_safe_app/public/api/admin/update-issue/${id}`,
+      {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${LogoutData}`
+        },
+        body: JSON.stringify(formData)
+      },
+    )
+      .then((response) => {
+        return response.json()
+      })
+      .then((data) => {
+        console.log(data)
+        document.querySelector('.loaderBox').classList.add("d-none");
+        setFormData({
+          resolution: ''
+        })
+
+      })
+      .catch((error) => {
+        document.querySelector('.loaderBox').classList.add("d-none");
+        console.log(error);
+      })
+  }
   useEffect(() => {
     document.querySelector('.loaderBox').classList.remove("d-none");
     const LogoutData = localStorage.getItem('login');
@@ -44,9 +86,10 @@ export const IssueDetail = () => {
       })
       .then((data) => {
         console.log(data)
+
         document.querySelector('.loaderBox').classList.add("d-none");
         setIssue(data.inquiry)
-        
+
       })
       .catch((error) => {
         document.querySelector('.loaderBox').classList.add("d-none");
@@ -74,13 +117,13 @@ export const IssueDetail = () => {
                   <button onClick={() => {
                     issue?.status ? setShowModal(true) : setShowModal3(true)
                   }} className="notButton primaryColor fw-bold text-decoration-underline">Mark as {issue?.status ? 'Inactive' : 'Active'}</button>
-                  <span className={`statusBadge ${issue?.status == 1 ? 'statusBadgeActive' : 'statusBadgeInactive'}`}>{issue?.status == 1 ? 'Active' : 'Resolved'}</span>
+                  <span className={`statusBadge ${issue?.status == 1 ? 'statusBadgeActive' : 'statusBadgeInactive'}`}>{issue?.status == 1 ? 'Active' : 'Inactive'}</span>
                 </div>
               </div>
               <div className="row">
                 <div className="col-lg-8">
                   <div className="row">
-                    <div className="col-xl-6 col-md-6 mb-3">  
+                    <div className="col-xl-6 col-md-6 mb-3">
                       <h4 className="secondaryLabel">Name</h4>
                       <p className="secondaryText">{issue?.user?.name}</p>
                     </div>
@@ -96,6 +139,35 @@ export const IssueDetail = () => {
                       <h4 className="secondaryLabel">Message</h4>
                       <p className="secondaryText">{issue?.message}</p>
                     </div>
+                    {
+                      message == true ? (
+                        <div className="col-md-12">
+                          <form onSubmit={handleSubmit}>
+                            <div className="form-group mb-4">
+                              <textarea name="message"
+                                placeholder="write message..."
+                                value={formData.resolution}
+                                className="form-control"
+                                rows={10}
+                                onChange={(event) => {
+                                  setFormData({ ...formData, resolution: event.target.value })
+                                  console.log(formData)
+                                }}></textarea>
+                            </div>
+                            <CustomButton variant='primaryButton' text="Send" type="submit"></CustomButton>
+                          </form>
+                        </div>
+                      ) : (
+                        <div className="col-xl-12 col-md-12 mb-3">
+                          <CustomButton variant='primaryButton' text="Reply" onClick={
+                            () => {
+                              setMessage(true)
+                            }
+                          }></CustomButton>
+                        </div>
+                      )
+
+                    }
                   </div>
                 </div>
               </div>

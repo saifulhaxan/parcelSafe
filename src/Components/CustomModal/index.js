@@ -13,23 +13,39 @@ const CustomModal = (props) => {
         <>
             <Modal show={props?.show} centered onHide={props?.close}>
                 <button className='closeButton' onClick={props?.close}><FontAwesomeIcon icon={faTimes} /></button>
-                <Modal.Body className='text-center'>
-                    {props?.success ?
-                        <FontAwesomeIcon icon={faCheckCircle} className='checkMark'></FontAwesomeIcon>
-                        :
-                        <FontAwesomeIcon icon={faQuestionCircle} className='questionMark'></FontAwesomeIcon>
-                        // <img src={question} alt="question" className='modalImage' />
-                    }
+                <Modal.Body className={props.children ? '' : 'text-center'}>
+                    {props?.children ? (
+                        ''
+                    ) : (
+                        // You can add alternative content here, like an image or text
+                        props?.success ? (
+                            <FontAwesomeIcon icon={faCheckCircle} className='checkMark' />
+                        ) : (
+                            <FontAwesomeIcon icon={faQuestionCircle} className='questionMark' />
+                        )
+                    )}
+
+
                     <div className="modalContent">
                         <h2 className="modalHeading">{props?.heading}</h2>
-                        {props?.success ? <CustomButton onClick={props?.close} variant='primaryButton' text={props?.btnTxt ? props?.btnTxt : 'Ok'} />
-                            :
-                            <>
-                            {props.childrens}
-                                <CustomButton onClick={props?.action} variant='primaryButton' text="Yes" className="me-2" />
-                                <CustomButton onClick={props?.close} variant='secondaryButton' text="No" />
-                            </>
+                        {props?.children ? (
+                            <p>
+                                <form onSubmit={props?.handleSubmit} className='formDataStyle'>
+                                    {props?.children}
+                                </form>
+                            </p>
+                        ) : (
+                            props?.success ? <CustomButton onClick={props?.close} variant='primaryButton' text={props?.btnTxt ? props?.btnTxt : 'Ok'} />
+                                :
+                                <>
+                                    <CustomButton onClick={props?.action} variant='primaryButton' text="Yes" className="me-2" />
+                                    <CustomButton onClick={props?.close} variant='secondaryButton' text="No" />
+                                </>
+                        )
                         }
+
+
+
                     </div>
                 </Modal.Body>
             </Modal>

@@ -52,7 +52,7 @@ const CustomFilters = (props) => {
             )}
           </div>
           <div className="col-xl-6 mb-2">
-            {/* {props?.filterSort && (
+            {props?.filterSort && (
               <div className="filterWrapper d-md-flex align-items-baseline gap-2">
                 <label className="filterLabel">Show:</label>
                 <select className="filterInput"
@@ -63,7 +63,7 @@ const CustomFilters = (props) => {
                   ))}
                 </select>
               </div>
-            )} */}
+            )}
           </div>
           <div className="col-xl-6 mb-2">
             {props?.filterSort && (

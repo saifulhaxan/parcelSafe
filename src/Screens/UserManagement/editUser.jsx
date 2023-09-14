@@ -18,8 +18,20 @@ export const EditUserDetails = () => {
     country: '',
     city: '',
     number: '',
+    status: ''
 
   });
+
+  const statusOption = [
+    {
+      code: 0,
+      name: 'Inactive'
+    },
+    {
+      code: 1,
+      name: 'Active'
+    }
+  ]
 
 
   const handleChange = (event) => {
@@ -94,6 +106,7 @@ export const EditUserDetails = () => {
       .then((data) => {
         document.querySelector('.loaderBox').classList.add("d-none");
         setFormData(data.users)
+        console.log(data)
       })
       .catch((error) => {
         document.querySelector('.loaderBox').classList.add("d-none");
@@ -211,7 +224,7 @@ export const EditUserDetails = () => {
                           onChange={handleChange}
                         />
                       </div>
-                      {/* <div className="col-md-4 mb-4">
+                      <div className="col-md-4 mb-4">
                         <SelectBox
                           selectClass="mainInput"
                           name="status"
@@ -219,11 +232,11 @@ export const EditUserDetails = () => {
                           required
                           placeholder="Select Status"
                           value={formData.status}
-                          option={status}
+                          option={statusOption}
                           onChange={handleChange}
                         />
 
-                      </div> */}
+                      </div>
                       <div className="col-md-12">
                         <CustomButton variant='primaryButton' text='Update' type='submit' />
                       </div>

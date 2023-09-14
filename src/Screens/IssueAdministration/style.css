@@ -4,6 +4,15 @@
 }
 
 
+.filterField > div {
+    width: 100%;
+}
+
+.filterField {
+    gap: 20px;
+}
+
+
 @media screen and (max-width: 1200px) and (min-width: 768px) {
     .stats, .stats:not(:last-child) {
         border-color: #fff0;

@@ -26,6 +26,7 @@ export const UserManagement = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(8);
   const [inputValue, setInputValue] = useState('');
+  const[selectedStatus, SetselectedStatus] = useState('')
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
@@ -51,10 +52,14 @@ export const UserManagement = () => {
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = filterData.slice(indexOfFirstItem, indexOfLastItem);
+  let currentItems = filterData.slice(indexOfFirstItem, indexOfLastItem);
 
 
-
+  currentItems = currentItems.filter((item) => {
+    console.log(item.status)
+    // Replace 'status' with the actual property in your data that represents the status
+    return selectedStatus === '' || item.status == 0;
+  });
   useEffect(() => {
     document.querySelector('.loaderBox').classList.remove("d-none");
     document.title = 'Parcel Safe | User Management';
@@ -106,7 +111,7 @@ export const UserManagement = () => {
     },
     {
       key: "numberofsafe",
-      title: "No Of Safe",
+      title: "No Of Safes",
     },
     {
       key: "registered",

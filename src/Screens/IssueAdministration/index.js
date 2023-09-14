@@ -12,6 +12,7 @@ import CustomModal from "../../Components/CustomModal";
 import CustomPagination from "../../Components/CustomPagination"
 import CustomInput from "../../Components/CustomInput";
 import CustomButton from "../../Components/CustomButton";
+import { SelectBox } from "../../Components/CustomSelect";
 
 
 import "./style.css";
@@ -27,6 +28,9 @@ export const IssueAdministration = () => {
   const [itemsPerPage, setItemsPerPage] = useState(8);
   const [inputValue, setInputValue] = useState('');
   const [addUser, setUser] = useState(false);
+  // const [limit, setLimit] = useState()
+  const [selectedStatus, setSelectedStatus] = useState(null);
+  const [selectedLimit, setSelectedLimit] = useState(5);
   const [formData, setFormData] = useState({
     name: '',
     status: 1
@@ -35,6 +39,17 @@ export const IssueAdministration = () => {
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
+
+  const statusOptions = [
+    {
+      code: 0,
+      name: 'Inactive'
+    },
+    {
+      code: 1,
+      name: 'Active'
+    }
+  ];
 
 
   const inActive = () => {
@@ -87,12 +102,18 @@ export const IssueAdministration = () => {
   }, []);
 
   const filterData = data.filter(item =>
-    item.issue.toLowerCase().includes(inputValue.toLowerCase())
+    item.user.name.toLowerCase().includes(inputValue.toLowerCase())
   );
 
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = filterData.slice(indexOfFirstItem, indexOfLastItem);
+  // const indexOfLastItem = currentPage * itemsPerPage;
+  // const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  // const currentItems = filterData.slice(indexOfFirstItem, indexOfLastItem);
+
+  const filteredItems = data
+    .filter(item =>
+      (selectedStatus === null || item.status == selectedStatus) &&
+      (selectedLimit === null || data.indexOf(item) < selectedLimit)
+    );
 
   const maleHeaders = [
     {
@@ -125,6 +146,20 @@ export const IssueAdministration = () => {
     },
   ];
 
+  const sortingData = [
+    {
+      code: 5,
+      name: '5'
+    },
+    {
+      code: 10,
+      name: '10'
+    },
+    {
+      code: 50,
+      name: '50'
+    }
+  ]
 
 
   const handleSubmit = (event) => {
@@ -172,30 +207,64 @@ export const IssueAdministration = () => {
             <div className="col-12">
               <div className="dashCard">
                 <div className="row mb-3 justify-content-between">
-                  <div className="col-md-6 mb-2">
+                  <div className="col-md-8 mb-2">
                     <h2 className="mainTitle">Issue Administartion</h2>
                   </div>
+                  <div className="col-md-4 d-flex justify-content-end">
+                    <CustomButton text="Add Issue Type" variant='primaryButton' onClick={() => {
+                      setUser(true)
+                    }} />
+                  </div>
+                </div>
+                <div className="align-items-end justify-content-between row">
                   <div className="col-md-6 mb-2">
+                    <div className="d-flex justify-content-between filterField">
+                      <SelectBox
+                        selectClass="mainInput"
+                        name="sort"
+                        label="Item Per Page:"
+                        placeholder="Sort"
+                        value={selectedLimit}
+                        option={sortingData}
+                        onChange={(e) => {
+                          setSelectedLimit(e.target.value);
+                        }}
+                      />
+
+                      <SelectBox
+                        selectClass="mainInput"
+                        name="filter"
+                        label="Sort By filter:"
+                        placeholder="filter"
+                        value={selectedStatus}
+                        option={statusOptions}
+                        onChange={(e) => {
+                          setSelectedStatus(e.target.value);
+                        }}
+                      />
+                    </div>
+                  </div>
+                  <div className="col-md-4 mb-2">
                     <div className="addUser">
-                      <CustomButton text="Add Issue Type" variant='primaryButton' onClick={() => {
-                        setUser(true)
-                      }} />
                       <CustomInput type="text" placeholder="Search Here..." value={inputValue} inputClass="mainInput" onChange={handleChange} />
                     </div>
                   </div>
                 </div>
                 <div className="row mb-3">
                   <div className="col-12">
+
                     <CustomTable
                       headers={maleHeaders}
 
+
                     >
                       <tbody>
-                        {currentItems.map((item, index) => (
+                        {filteredItems.map((item, index) =>
+                        (
                           <tr key={index}>
                             <td>{index + 1}</td>
                             <td className="text-capitalize">
-                              {item.created_at}
+                              {item.user.name}
                             </td>
                             <td>{item.issue}</td>
                             <td>{item.updated_at}</td>
@@ -218,12 +287,12 @@ export const IssueAdministration = () => {
                         ))}
                       </tbody>
                     </CustomTable>
-                    <CustomPagination
+                    {/* <CustomPagination
                       itemsPerPage={itemsPerPage}
                       totalItems={data.length}
                       currentPage={currentPage}
                       onPageChange={handlePageChange}
-                    />
+                    /> */}
                   </div>
                 </div>
               </div>
